@@ -4,7 +4,7 @@ Hashcat is a powerful password cracking tool used to recover passwords from hash
 
 The command to run Hashcat for Windows hash dumping is as follows:
 ```
-hashcat -m 400 -a 0 hash /usr/share/wordlists/rockyou.txt
+hashcat -m 400 -a 0 hash /usr/share/wordlists/rockyou.txt.
 ```
 This command uses the rockyou.txt wordlist to crack the passwords from the provided hash.
 
